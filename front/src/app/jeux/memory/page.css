@@ -1,0 +1,46 @@
+.memory {
+    display: flex;
+    flex-wrap: wrap;
+    width: 350px;
+    margin: auto;
+    user-select: none;
+  }
+  .memory > .card {
+    font-size: 2em;
+    /* flex: 1 1 calc(100% / 6 - 0.4em);  */
+    outline: 0.08em solid silver;
+    margin: 0.2em;
+    display: flex; 
+    cursor: default;
+    width: 42px;
+    height: 42px;
+  }
+  
+  .memory > .card.hidden {
+    background: rgb(54, 50, 50);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .memory > .card.justMatched,
+  .memory > .card.justMismatched {
+    outline: 0.1em solid green;
+  }
+  .memory > .card.justMismatched {
+    outline-color: red;
+  }
+  
+  .memory > .card.visible {
+    cursor: not-allowed;
+  }
+  
+  .memory > .card > .symbol {
+    margin: auto;
+  }
+  .memory > .guesses {
+    font-size: 1em;
+    width: calc(100% - 0.4em);
+    margin: 0.2em;
+    text-align: right;
+    font-family: Menlo, Monaco, Consolas, Inconsolata, 'Courier New', monospace;
+  }
