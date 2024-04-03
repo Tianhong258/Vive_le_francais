@@ -11,6 +11,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+
 import React, { useState, useEffect } from 'react';
 
 
@@ -59,7 +60,7 @@ export default function Home() {
                      <CommandItem key={item._id}>
                       <div>
                           {item.fr}
-                    </div>
+                      </div>
                     </CommandItem>
                   ))}
             </CommandList>) : null

@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
   });
-  
+
 //Middleware pour parser le JSON et utiliser le fichier JSON
 app.use(express.json());
   

@@ -5,11 +5,10 @@ import "./page.css"
 import CardMemory from "../../components/cardMemory"
 
 
-const SIDE = 6
-const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿'
+const SIDE = 4
 const VISUAL_PAUSE_MSECS = 750
 
-
+//obtenir la liste de vocabulaire de l'utilisateur
 async function getListVocabulaire(){
   try{
     let response = await fetch("http://localhost:3001/api/");
@@ -21,38 +20,56 @@ async function getListVocabulaire(){
   }
 }
 
-function generateCards(){
-  const result = []
+
+//obtenir la liste de mots qui va être utilisée dans le jeu et générer les cartes
+let listMots =[]
+async function generateCards(){
   const size = SIDE * SIDE
-  const candidates = shuffle(SYMBOLS)
-  while (result.length < size) {
-    const card = candidates.pop()
-    result.push(card, card)
-  }
-  return shuffle(result)
+  const getData = await getListVocabulaire()
+  console.log(getData)
+  //s'il y a une liste de vocabulaire dans la base de donne, générer la liste de vocabulaire qui va être utiliser dans le jeu
+  if(getData.length>0){
+    const dataShuffle = shuffle(getData)
+    while (listMots.length < size/2) {
+      const card = dataShuffle.pop()
+      listMots.push(card)
+    }
+  //   for(let i=0; i < size/2; i++){
+  //     listMots.push(dataShuffle[i])
+  // }
+}
+  console.log(listMots)
+  const candidates = []
+  listMots.forEach((mot)=>{
+  candidates.push(mot.fr)
+  candidates.push(mot.jeux)})
+  return shuffle(candidates)
 }
 
-let cards = generateCards()
 
 export default function gameFun() {
-  const [isClient, setIsClient] = useState(false)
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
+  const [isClient, setIsClient]=useState(false)
+  const [cards, setCards] = useState([])
   const [ matchedCardIndices, setMatchCardIndices ] = useState([])
   const [ currentPair,setCurrentPair ] = useState([])
 
-
-
+  //quand la page web est activée, exécuter les fonctions qui générent le jeu pour obtenir les cartes de cette partie
   useEffect(() => {
-    console.log('État mis à jour :', currentPair);
-  }, [currentPair]);
+    setIsClient(true)
+    console.log("J'ai lancé une fois")
+    async function fetchCards() {
+      const generatedCards = await generateCards();
+      setCards(generatedCards);
+    }
+    fetchCards()
+}, []);
 
-//Vérifier que les cases cliquées et pas matché
-//S'il y a déjà 2 cases cliquées, faire rien
-//S'il y a pas encore des cases cliquées, mettre l'index de la case qui est venu de cliquée dans le tableau currentPair
-//Si les autres cas: 1 case est cliquée: faire handleNewPairClosedBy
+
+//contrôle quand on clicke sur une carte
+//avoir les effets seulement quand la carte n'est pas matché:
+//S'il y a déjà 2 cartes cliquées, faire rien
+//S'il y a pas encore de carte cliquée, mettre l'index de la carte qui est venue d'être cliquée dans le tableau currentPair
+//S'il y a déjà une carte est cliquée: appeler la fonction handleNewPairClosedBy
 function handleCardClick(index) {
   if( !matchedCardIndices.includes(index)){
     if (currentPair.length === 2) {
@@ -66,24 +83,30 @@ function handleCardClick(index) {
   }
 }
 
-//Pour vérifier la deuxième case cliquée est match avec la première ou pas
-//Si on a pas cliqué la même case que la première fois, on va stoké aussi l'index de cette case dans le tableau currentPair
-//et si les deux cases sont pareilles, on va mettre les deux index dans le tableau match
-//et dans 750 misecondes, on va initialiser le tableau currentPair
+//Fonction pour contrôler quand la deuxième carte est cliquée
+//Si on n'a pas cliqué la même case que la première fois, on va stocker aussi l'index de cette carte dans le tableau currentPair
+//Si les deux cartes partage le même id dans la base de donnée(les deux cartes sont matchés),
+//on va mettre les deux index dans le tableau matché
+//et dans 750 misecondes, initialiser le tableau currentPair
 function handleNewPairClosedBy(index) {
   if(index !== currentPair[0]){
     const newPair = [currentPair[0], index]
-    const matched = cards[newPair[0]] === cards[newPair[1]]
+    const matched = listMots.find(mot => mot.fr==cards[newPair[0]] && mot.jeux == cards[newPair[1]]) || listMots.find(mot => mot.fr==cards[newPair[1]] && mot.jeux == cards[newPair[0]])
     setCurrentPair(newPair)
-    //setGuesses(guesses + 1)
     if (matched) {
       setMatchCardIndices([...matchedCardIndices, ...newPair])
     }
-    //console.log(currentPair)
     setTimeout(() => setCurrentPair([]), VISUAL_PAUSE_MSECS)
   }
 }
 
+//Fonction pour contrôler l'apparence des cartes(face caché ou face visible)
+//Si seulement une ou moins de carte est cliquée 
+//et la carte est matchée ou c'est la carte est la première carte cliquée
+//mettre cette carte visible, sinon le cacher 
+//Si deux carte sont cliqué et la carte est l'une des deux, selon qu'elle vient d'être matchée ou pas
+//change la couleur de bord en verte/rouge
+//Si les autres cas, si la carte est déjà matchée, rester en visible, sinon rester en cachée 
 function getFeedbackForCard(index) {
   const indexMatched = matchedCardIndices.includes(index)
   if (currentPair.length < 2) {
@@ -92,10 +115,13 @@ function getFeedbackForCard(index) {
   if (currentPair.includes(index)) {
     return indexMatched ? 'justMatched' : 'justMismatched'
   }
-    return indexMatched ? 'visible' : 'hidden'
+  return indexMatched ? 'visible' : 'hidden'
 } 
 
+const won = matchedCardIndices.length === cards.length
+
 return (isClient ? (
+  <div className='memory-container'>
   <div className="memory">
   {cards.map((card, index) =>
     <CardMemory
@@ -106,26 +132,10 @@ return (isClient ? (
       onClick={handleCardClick}
     />
   )}
+  {won && "Vous avez gagnez ! Félicitation !"}
+</div>
 </div>) : null
    )}
-  
-// return (
-//   isClient ? (
-//     <div className="memory">
-//       {cards?.map((card, index) => (
-//         <div
-//           className={`card ${getFeedbackForCard(index)}`} // Utilisez la fonction getFeedbackForCard pour obtenir le feedback
-//           key={index}
-//           index={index}
-//           onClick={() => handleCardClick(index)}
-//         >
-//           {getFeedbackForCard(index) === 'hidden' ? HIDDEN_SYMBOL : card}
-//         </div>
-//       ))}
-//     </div>
-//   ) : null
-// );
-//}
 
 
 

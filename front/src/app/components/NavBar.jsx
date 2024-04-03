@@ -15,14 +15,10 @@ import Link from 'next/link'
 
 
 const Jeux = [
-  { name: 'Association', description: 'Réviser mot par mot', href: '#', icon: ChartPieIcon },
-  { name: 'Memory', description: 'Réviser comme un jeux de mémoriser', href: '#', icon: CursorArrowRaysIcon },
+  { name: 'Association', description: 'Réviser mot par mot', href: "association", icon: ChartPieIcon },
+  { name: 'Memory', description: 'Réviser comme un jeux de mémoriser', href: "memory", icon: CursorArrowRaysIcon },
  
 ]
-// const callsToAction = [
-//   { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-//   { name: 'Contact sales', href: '#', icon: PhoneIcon },
-// ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -62,7 +58,7 @@ export default function navBar() {
               <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
                   {Jeux.map((item) => (
-                    <Link href="/jeux/gameFun" key={item.name}>
+                    <Link href={`/jeux/${item.href}`} key={item.name}>
                     <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
                       <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                         <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
@@ -75,21 +71,7 @@ export default function navBar() {
                     </div>
                     </Link>
                   ))}
-                
                 </div>
-                
-                {/* <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                    >
-                      <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                      {item.name}
-                    </a>
-                  ))}
-                </div> */}
               </Popover.Panel>
             </Transition>
           </Popover>
@@ -97,9 +79,9 @@ export default function navBar() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Mon cahier
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link href="/ajouter-un-mot" className="text-sm font-semibold leading-6 text-gray-900">
             Ajouter un mot
-          </a>
+          </Link>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Ma progression
           </a>
@@ -152,7 +134,7 @@ export default function navBar() {
                           <Disclosure.Button
                             key={item.name}
                             as="a"
-                            href={item.href}
+                            href={`/jeux/${item.href}`}
                             className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                           >
                             {item.name}
@@ -168,6 +150,11 @@ export default function navBar() {
                 >
                   Mon cahier
                 </a>
+                <Link 
+                  href="/ajouter-un-mot" 
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  Ajouter un mot
+                </Link>
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
@@ -185,7 +172,7 @@ export default function navBar() {
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                  Log in
+                  Connexion
                 </a>
               </div>
             </div>
