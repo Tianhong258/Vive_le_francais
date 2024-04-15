@@ -20,32 +20,8 @@ async function getListVocabulaire(){
   }
 }
 
-
 //obtenir la liste de mots qui va être utilisée dans le jeu et générer les cartes
 let listMots =[]
-async function generateCards(){
-  const size = SIDE * SIDE
-  const getData = await getListVocabulaire()
-  console.log(getData)
-  //s'il y a une liste de vocabulaire dans la base de donne, générer la liste de vocabulaire qui va être utiliser dans le jeu
-  if(getData.length>0){
-    const dataShuffle = shuffle(getData)
-    while (listMots.length < size/2) {
-      const card = dataShuffle.pop()
-      listMots.push(card)
-    }
-  //   for(let i=0; i < size/2; i++){
-  //     listMots.push(dataShuffle[i])
-  // }
-}
-  console.log(listMots)
-  const candidates = []
-  listMots.forEach((mot)=>{
-  candidates.push(mot.fr)
-  candidates.push(mot.jeux)})
-  return shuffle(candidates)
-}
-
 
 export default function gameFun() {
   const [isClient, setIsClient]=useState(false)
@@ -57,12 +33,29 @@ export default function gameFun() {
   useEffect(() => {
     setIsClient(true)
     console.log("J'ai lancé une fois")
-    async function fetchCards() {
-      const generatedCards = await generateCards();
-      setCards(generatedCards);
-    }
-    fetchCards()
-}, []);
+    async function generateCards(){
+      const size = SIDE * SIDE
+      const getData = await getListVocabulaire()
+      console.log(getData)
+      //s'il y a une liste de vocabulaire dans la base de donne, générer la liste de vocabulaire qui va être utiliser dans le jeu
+      if(getData.length>0){
+          const dataShuffle = shuffle(getData)
+          //   for(let i=0; i < size/2; i++){
+          //     listMots.push(dataShuffle[i])
+          // }
+          while (listMots.length < size/2) {
+              const card = dataShuffle.pop()
+              listMots.push(card)
+          }
+      }
+      console.log(listMots)
+      const candidates = []
+      listMots.forEach((mot)=>{
+      candidates.push(mot.fr)
+      candidates.push(mot.jeux)})
+      setCards(shuffle(candidates));}
+      generateCards()
+    }, []);
 
 
 //contrôle quand on clicke sur une carte

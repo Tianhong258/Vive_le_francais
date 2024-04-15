@@ -3,8 +3,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 const mongoose = require('mongoose');
-const vocabulaireRoute = require("./routes/vocabulaireRoute")
-
+const vocabulaireRoute = require("./routes/vocabulaireRoutes")
+const sessionRoute = require("./routes/utilisateurRoutes")
 
 mongoose.connect('mongodb://localhost:27017/vive_le_français',
     {useNewUrlParser: true,
@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 app.use(express.json());
   
 app.use("/api", vocabulaireRoute);
+//app.use("api/auth", sessionRoutes)
 
 
 app.listen(port, () => {

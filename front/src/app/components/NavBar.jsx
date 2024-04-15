@@ -85,6 +85,9 @@ export default function navBar() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Ma progression
           </a>
+          <Link href="/correction-orthographe" className="text-sm font-semibold leading-6 text-gray-900">
+            Correction orthographe
+          </Link>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             A propos
           </a>
@@ -161,6 +164,12 @@ export default function navBar() {
                 >
                   Ma progression
                 </a>
+                <Link
+                  href="/correction-orthographe"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Correction orthographe
+                </Link>
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"

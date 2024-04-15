@@ -1,3 +1,4 @@
+//contrôle seulement les erreurs
 const vocabulaireService = require("../models/vocabulaireService")
 
 const getAllVocabulaires = async (req, res) => {

@@ -1,5 +1,5 @@
 //avoir et manipulation des données (CRUD)
-const Vocabulaire = require('./vocabulaireShema');
+const Vocabulaire = require('./vocabulaireSchema');
 
 const getAllVocabulaires = async()=>{
     try{
@@ -9,6 +9,9 @@ const getAllVocabulaires = async()=>{
         throw error;
       }
     };
+
+
+
 module.exports = {
     getAllVocabulaires
 }
