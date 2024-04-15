@@ -15,6 +15,6 @@ Vive le Français est un projet personnel qui vise à créer un site web de dict
 - Mongo DB
 
 ### Chatbot
--Libraire huggingface.js
--LLM(IA Générative)
+- Libraire huggingface.js
+- LLM(IA Générative)
    
