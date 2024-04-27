@@ -1,19 +1,29 @@
 //contrôler les erruers liées à utilisateurs 
 const { connection } = require("mongoose");
-const utilisateurService = require("../models/utilisateurService")
+const utilisateur = require("../models/utilisateurService")
 
-const inscrption = async (req, res) => {
+const inscription = async (req, res) => {
     try {
-        const infoUtilisateur = await utilisateurService.inscrption();
-        res.status(200).json(infoUtilisateur);
-    } catch (error) {
-        res.status(500).json({ message: "Erreur lors de l'inscrption", error: error.message });
+        const newUtilisateur = await utilisateur.inscription(req.body);
+        res.status(201).json({ message: "Utilisateur bien créé !" });
+        console.log(newUtilisateur + " bien créé ! ")
+        return newUtilisateur
+    }catch (error) {
+        res.status(500).json({ message: "Erreur lors de l'inscription", error: error.message });
+    }
+};
+
+const connectionUtilisateur = async (req, res) => {
+    try {
+        const utilisateurConnecte = await utilisateur.connection(req.body, res);
+        console.log(utilisateurConnecte)
+    }catch (error) {
+        res.status(500).json({ message: "Connection échouée", error: error.message });
     }
 };
 
 
 module.exports = { 
-    inscrption,
-    connection
-
+    inscription,
+    connectionUtilisateur
 }

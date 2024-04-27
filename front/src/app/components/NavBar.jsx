@@ -12,6 +12,7 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 
+//todo : ajouter le logo
 
 
 const Jeux = [
@@ -39,6 +40,11 @@ export default function navBar() {
             <span className="sr-only">Open main menu</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
+        </div>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-start">
+        <Link href="/">
+            <img src="/logo_instant.png" alt="Logo du site" className="h-8 w-8 mr-2 "/>
+        </Link>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
@@ -75,10 +81,9 @@ export default function navBar() {
               </Popover.Panel>
             </Transition>
           </Popover>
-
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link href="/mon-cahier" className="text-sm font-semibold leading-6 text-gray-900">
             Mon cahier
-          </a>
+          </Link>
           <Link href="/ajouter-un-mot" className="text-sm font-semibold leading-6 text-gray-900">
             Ajouter un mot
           </Link>
@@ -93,9 +98,9 @@ export default function navBar() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Connexion <span aria-hidden="true">&rarr;</span>
-          </a>
+          <Link href="inscription/connection" className="text-sm font-semibold leading-6 text-gray-900">
+            Inscription/Connection <span aria-hidden="true">&rarr;</span>
+          </Link>
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -147,12 +152,11 @@ export default function navBar() {
                     </>
                   )}
                 </Disclosure>
-                <a
-                  href="#"
+                <Link href="/mon-cahier" 
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Mon cahier
-                </a>
+                </Link>
                 <Link 
                   href="/ajouter-un-mot" 
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
@@ -178,11 +182,10 @@ export default function navBar() {
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <Link href="/inscription-connection"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                  Connexion
-                </a>
+                  Inscription/Connection
+                </Link>
               </div>
             </div>
           </div>

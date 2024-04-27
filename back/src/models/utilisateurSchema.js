@@ -1,14 +1,13 @@
 const { request } = require('express')
 const mongoose = require('mongoose')
-
 const uniqueValidator = require("mongoose-unique-validator")
 
-const userSchema = mongoose.Schema({
+const utilisateurSchema = mongoose.Schema({
     pseudo: {type: String, required : true, unique: true}, 
-    email: {type: String, minlength : 6, required: true},
-    password: {type: String, required : true}
-})
+    email: {type: String, required: true, unique: true},
+    password: {type: String, minlength : 4, required : true}
+},{strict:false,versionKey: false})
 
-userSchema.plugin(uniqueValidator)
+utilisateurSchema.plugin(uniqueValidator)
 
-module.exports = mongoose.model("User",userSchema)
+module.exports = mongoose.model("Utilisateur",utilisateurSchema,"utilisateurs")

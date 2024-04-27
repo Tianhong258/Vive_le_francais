@@ -7,12 +7,12 @@
     user-select: none;
   }
 
-  .memory-container {
+  /* .memory-container {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 35%;
     transform: translate(-50%, -50%);
-  }
+  } */
  .memory > .card {
     font-size: 1.5em; /* Taille de la police des cartes */
     border-radius: 15px; /* Bordure arrondie */
@@ -26,7 +26,7 @@
   }
   
   .memory > .card.hidden {
-    background: rgb(54, 50, 50);
+    background:rgb(52, 84, 180)
   }
   
   .memory > .card.justMatched,

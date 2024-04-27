@@ -3,6 +3,7 @@ import shuffle from 'lodash.shuffle'
 import React, { useState, useEffect } from 'react';
 import "./page.css"
 import CardMemory from "../../components/cardMemory"
+import NavBar from "../../components/NavBar";
 
 
 const SIDE = 4
@@ -19,44 +20,51 @@ async function getListVocabulaire(){
       console.error("Erreur lors de la récupération de la liste de vocabulaire :", error);
   }
 }
-
 //obtenir la liste de mots qui va être utilisée dans le jeu et générer les cartes
 let listMots =[]
 
+function getCards(getData){
+  let size = SIDE * SIDE
+  if(getData.length > 0){ 
+  const dataShuffle = shuffle(getData)
+  if(getData.length < size/2){
+    size = getData.length*2
+  } 
+    while (listMots.length < size/2) {
+      let card = dataShuffle.pop()
+      listMots.push(card)
+  }
+}
+const candidates = []
+listMots.forEach((mot)=>{
+candidates.push(mot.fr)
+candidates.push(mot.jeux)})
+return(shuffle(candidates))
+}
+
+
 export default function gameFun() {
-  const [isClient, setIsClient]=useState(false)
+  const [isClient, setIsClient] = useState(false)
   const [cards, setCards] = useState([])
   const [ matchedCardIndices, setMatchCardIndices ] = useState([])
   const [ currentPair,setCurrentPair ] = useState([])
-
-  //quand la page web est activée, exécuter les fonctions qui générent le jeu pour obtenir les cartes de cette partie
+  
+  //après le premier rendu de la page, exécuter les fonctions qui générent le jeu pour obtenir les cartes de cette partie
   useEffect(() => {
-    setIsClient(true)
-    console.log("J'ai lancé une fois")
+       if(!isClient){
+       setIsClient(true)
+     }
     async function generateCards(){
-      const size = SIDE * SIDE
       const getData = await getListVocabulaire()
       console.log(getData)
+      const jeu = getCards(getData)
+      console.log("On a appelé generateCards")
+      setCards(jeu)
+    }
       //s'il y a une liste de vocabulaire dans la base de donne, générer la liste de vocabulaire qui va être utiliser dans le jeu
-      if(getData.length>0){
-          const dataShuffle = shuffle(getData)
-          //   for(let i=0; i < size/2; i++){
-          //     listMots.push(dataShuffle[i])
-          // }
-          while (listMots.length < size/2) {
-              const card = dataShuffle.pop()
-              listMots.push(card)
-          }
-      }
-      console.log(listMots)
-      const candidates = []
-      listMots.forEach((mot)=>{
-      candidates.push(mot.fr)
-      candidates.push(mot.jeux)})
-      setCards(shuffle(candidates));}
+      
       generateCards()
     }, []);
-
 
 //contrôle quand on clicke sur une carte
 //avoir les effets seulement quand la carte n'est pas matché:
@@ -112,22 +120,27 @@ function getFeedbackForCard(index) {
 } 
 
 const won = matchedCardIndices.length === cards.length
-
+//todo : la position du board de jeu
 return (isClient ? (
-  <div className='memory-container'>
-  <div className="memory">
-  {cards.map((card, index) =>
-    <CardMemory
-      key={index}
-      index={index}
-      card={card}
-      feedback={getFeedbackForCard(index)}
-      onClick={handleCardClick}
-    />
-  )}
-  {won && "Vous avez gagnez ! Félicitation !"}
-</div>
-</div>) : null
+  <div>
+      <div>
+        <NavBar />
+      </div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="memory">
+          {cards.map((card, index) =>
+            <CardMemory
+              key={index}
+              index={index}
+              card={card}
+              feedback={getFeedbackForCard(index)}
+              onClick={handleCardClick}
+          />
+          )}
+          {won && "Vous avez gagnez ! Félicitation !"}
+        </div>
+      </div>
+  </div>) : null
    )}
 
 

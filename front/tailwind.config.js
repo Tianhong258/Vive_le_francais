@@ -6,6 +6,8 @@ module.exports = {
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
+    './src/app/**/*.{js,jsx}',
+    './**/page.jsx',
   ],
   prefix: "",
   theme: {
@@ -74,7 +76,7 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate"),
-  require('@tailwindcss/forms')
+  require('@tailwindcss/forms'),
 ],
   
 }
