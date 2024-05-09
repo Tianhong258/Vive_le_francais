@@ -126,7 +126,7 @@ return (isClient ? (
       <div>
         <NavBar />
       </div>
-      <div className="flex justify-center items-center h-screen">
+      <div className='memory-container'>
         <div className="memory">
           {cards.map((card, index) =>
             <CardMemory

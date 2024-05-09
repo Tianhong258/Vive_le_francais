@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { HfInference } from "@huggingface/inference";
 import NavBar from "../components/NavBar";
 
+
 //todo: le premier clique il y a une erreur "TypeError: Cannot read properties of null (reading 'signal')"
 export default function Correction() {
   const [generatedText, setGeneratedText] = useState([]);
@@ -66,9 +67,9 @@ export default function Correction() {
       <div>
         <NavBar />
       </div>
-      <form>
-        <div className="space-y-12">
-          <div className="border-b border-gray-900/10 pb-12">
+      {/* <div className="space-y-12">  */}
+      <div className="space-y-12 flex flex-col items-center justify-center h-full">
+          <form className="flex flex-col items-center justify-center">
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
@@ -107,11 +108,10 @@ export default function Correction() {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
       </form>
-      <div id="generation">
+        <div id="generation">
           {generatedText}
+        </div>
         </div>
       {/* 
       <div className="container">

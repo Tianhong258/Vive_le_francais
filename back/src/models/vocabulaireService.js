@@ -12,8 +12,12 @@ const getAllVocabulaires = async()=>{
 
 const creatVocabulaires = async(data) => {
     try{
-      delete data._id;
-      const vocabulaire = new Vocabulaire({...data});
+      delete data.data._id;
+      const vocabulaire = new Vocabulaire({
+        fr: data.data.fr,
+        ch: data.data.ch,
+        jeux: data.data.jeux
+      });
       await vocabulaire.save()
       return vocabulaire
     } catch(error){
