@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import Link from 'next/link';
 import NavBar from "../components/NavBar";
-
+//Todo : mettre en page : 10 mots par page, trier par ordre alphabétique : regarde shadcn/ui Table
 import {
     Table,
     TableBody,
@@ -41,24 +41,26 @@ export default function cahier(){
       <div>
         <NavBar/>
       </div>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Vocabulaire</TableHead>
-          <TableHead>Définition</TableHead>
-          <TableHead>Voir les détails</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>    
-        {liste.map((vocabulaire, index) =>
-          <TableRow key={index}>
-            <TableCell className="font-medium">{vocabulaire.fr}</TableCell>
-            <TableCell className="font-medium">{vocabulaire.jeux}</TableCell>
-            <TableCell><Button><Link href={`/mon-cahier/detail-mot/${vocabulaire._id}`}>Détails</Link></Button></TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-</Table>
-</div>
+        <Table className="text-center">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-center">Vocabulaire</TableHead>
+              <TableHead className="text-center">Définition</TableHead>
+              <TableHead className="text-center">Voir les détails</TableHead>
+            </TableRow>
+          </TableHeader>
+        <TableBody>    
+            {liste.map((vocabulaire, index) =>
+            <TableRow key={index} className="text-center">
+              <TableCell className="font-medium text-center">{vocabulaire.fr}</TableCell>
+              <TableCell className="font-medium">{vocabulaire.jeux}</TableCell>
+              <TableCell className="font-medium">
+              <Link href={`/mon-cahier/${vocabulaire._id}`}><Button style={{backgroundColor: 'rgb(52, 84, 180)'}}>Détails</Button></Link>
+              </TableCell>
+            </TableRow>
+            )}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

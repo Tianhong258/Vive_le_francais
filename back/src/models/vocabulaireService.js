@@ -36,7 +36,7 @@ const getOneVocabulaire = async(data)=>{
 
 const updateVocabulaire = async(data)=>{
     try{
-        const vocabulaire = await Vocabulaire.updateOne({ _id: data.params.id }, { ...data.body, _id: data.params.id })
+        const vocabulaire = await Vocabulaire.updateOne({ _id: data.params.detailId }, { ...data.data.body, _id: data.params.detailId })
         return vocabulaire;
       } catch (error) {
         throw error;
