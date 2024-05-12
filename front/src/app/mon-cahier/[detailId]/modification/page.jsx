@@ -4,6 +4,7 @@ import NavBar from "../../../components/NavBar"
 import { useForm } from "react-hook-form"
 import { getDetail } from "../../getDatail"
 
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -16,28 +17,40 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+//todo:afficher les erreurs quand le fetch ne marche pas 
+
 export default function modifierVocabulaire({params}){
   const [viewModification, setViewModification] = useState(false)
   const [data, setData] = useState({})
- 
-  useEffect(() => {
-    async function getDetailVocabulaire(){
-      const getData = await getDetail(params.detailId)
-      setData(getData)
+
+
+useEffect(() => {
+    async function getDetailVocabulaire() {
+      const getData = await getDetail(params.detailId);
+      setData(getData);
+      const defaultValues = {
+        fr: getData.fr,
+        ch: getData.ch,
+        jeux: getData.jeux
+      };
+      reset(defaultValues);
     }
-    getDetailVocabulaire()
- }, []);
+  
+    getDetailVocabulaire();
+  }, []);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm()
+
 
   const onSubmit = async(data) => {
     try{
       const response = await fetch(`http://localhost:3001/api/${params.detailId}`, {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json"
           },
@@ -45,7 +58,9 @@ export default function modifierVocabulaire({params}){
         });
       const json = await response.json()
       console.log(json)
-      setViewModification(true)
+      if(response.ok){
+        setViewModification(true)
+    }
     }catch(error){
       throw error
     }
@@ -65,19 +80,19 @@ export default function modifierVocabulaire({params}){
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="mot">Nouveau mot</Label>
-                <Input id="mot" name="mot" defaultValue={data.fr} {...register("fr")}/>
+                <Label htmlFor="fr">Nouveau mot</Label>
+                <Input type="text" id="fr" name="fr" placeholder="fr" {...register("fr")}/>
                 {errors.fr && <span>Ce champs est obligatoire ! </span>}
    
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="traduction">Traduction</Label>
-                <Input id="traduction" name="traduction" defaultValue={data.ch} {...register("ch")}/>
+                <Label htmlFor="ch">Traduction</Label>
+                <Input type="text" id="ch" name="ch" placeholder="ch" {...register("ch")}/>
                 {errors.ch && <span>Ce champs est obligatoire ! </span>}
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="jeux">Traduction en un mot</Label>
-                <Input id="jeux"  name="jeux" defaultValue={data.jeux} {...register("jeux")}/>
+                <Input type="text" id="jeux" name="jeux" placeholder="jeux"  {...register("jeux")}/>
                 {errors.jeux && <span>Ce champs est obligatoire ! </span>}
               </div>
               <div className="flex flex-col space-y-1.5">

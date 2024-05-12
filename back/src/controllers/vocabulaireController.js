@@ -32,7 +32,7 @@ const getOneVocabulaire = async (req, res) => {
 
 const updateVocabulaire = async (req, res) => {
     try {
-        const vocabulaire = await vocabulaireService.updateVocabulaire(req);
+        const vocabulaire = await vocabulaireService.updateVocabulaire(req.body, req.params);
         res.status(200).json(vocabulaire);
     } catch (error) {
         res.status(400).json({ message: 'Erreur lors de la modification du mot de vocabulaire.', error: error.message });

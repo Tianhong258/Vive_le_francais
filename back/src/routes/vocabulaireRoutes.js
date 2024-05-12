@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/", vocabulaireController.getAllVocabulaires)
 router.post("/", vocabulaireController.creatVocabulaires)
 router.get('/:id', vocabulaireController.getOneVocabulaire)//ce sont les id du mot de vocabulaire
-router.patch('/:id', vocabulaireController.updateVocabulaire)
+router.put('/:id', vocabulaireController.updateVocabulaire)
 router.delete('/:id', vocabulaireController.deleteVocabulaire)
 
 module.exports = router
