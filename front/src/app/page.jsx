@@ -13,9 +13,8 @@ import {
 } from "@/components/ui/command"
 import React, { useState, useEffect } from 'react';
 
-//todo : quand on clique sur le mot suggestion, le mot se mets automatiquement dans l'input
-//quand je supprime les lettres, il y a une erreur undefined 
-//changer comme combobox est mieux 
+//todo :mot dans la liste cliquable
+//changer onClick par onChange
 
 async function getListVocabulaire(){
   try{
@@ -34,12 +33,11 @@ export default function Home() {
   const [isClient, setIsClient] = useState("client")
   const [value, setValue] = useState("")
 
- 
+
   useEffect(() => {
      if(isClient){
        setIsClient("setClient")
      }
-
     async function fetchData() {
     const vocabulaireData = await getListVocabulaire();
     setListVocabulaire(vocabulaireData);
@@ -59,31 +57,39 @@ export default function Home() {
         </a>
       </div>
       <div>
-        <Command style={{ 
-        width: '1000px', 
-        margin: '0 auto', 
-        display: 'block' 
-    }}  placeholder="Chercher un mot...">
-          <CommandInput  onClick={() => setCommandListVisible(!isCommandListVisible)}/>
-          { isCommandListVisible ? (
-            <CommandList>
-              <CommandEmpty key="empty">Aucun résultat.</CommandEmpty>
-                <CommandGroup>
-                  {listVocabulaire.map((item) => (
-                     <CommandItem key={item._id} value={item.fr}
-                        onClick={(currentValue) => { setValue(currentValue === value ? "" : currentValue)
-                      }}>
-                          {item.fr}  
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-            </CommandList>) : null
-          }
-        </Command>
-      </div>
-   </div>
+  <Command style={{ 
+    width: '1000px', 
+    margin: '0 auto', 
+    display: 'block' 
+  }} placeholder="Chercher un mot...">
+    <CommandInput name="input" onClick={() => setCommandListVisible(!isCommandListVisible)} />
+      <CommandList>
+         <CommandEmpty key="empty">Aucun résultat.</CommandEmpty>
+       <CommandGroup>
+       { isCommandListVisible && listVocabulaire !== undefined ?
+          listVocabulaire.map((item) => (
+            <CommandItem 
+              key={item._id} 
+              value={item.fr}
+              onSelect={(currentValue) => {
+                setValue(currentValue === value ? "" : currentValue);
+              }}
+            >
+              {item.fr}  
+            </CommandItem>
+          ))
+     :  (null)
+    }
+    </CommandGroup>
+      </CommandList>
+  </Command>
+
+</div>
+</div>
   );
 }
 
 
 
+
+    

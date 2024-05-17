@@ -41,7 +41,7 @@ export default function Correction() {
     //todo : améliorer le promp, trop embêtent d'avoir toujours félicitations
     const input = message.replace(
       "{:}",
-      `Tu es un assistant qui corrige tout le temps la syntaxe et l'orthographe des phrases françaises. Si la phrase est correcte, tu peux me répondre "Félicitations ! Votre phrase est correcte ! ", si la phrase n'est pas correcte, tu peux juste l'afficher la phrase corrigée sans afficher d'autres phrases, maintenant tu me corrige la phrase suivante : ${textInput}`
+      `Tu es un assistant spécialisé dans la correction de la syntaxe et de l'orthographe des phrases en français. Si la phrase est correcte, réponds simplement par "Félicitations ! Votre phrase est correcte !". Si la phrase est incorrecte, affiche uniquement la phrase corrigée sans ajouter d'autres commentaires. Corrige la phrase suivante :${textInput}`
     );
     const token = "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";
     const hf = new HfInference(token);
