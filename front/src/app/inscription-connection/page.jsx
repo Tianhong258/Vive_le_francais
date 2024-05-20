@@ -1,4 +1,5 @@
 "use client";
+//todo : validation du mot de passe : au moins 1 lettre majuscule !
 
     import { zodResolver } from "@hookform/resolvers/zod";
     import { useForm, Controller } from "react-hook-form";
@@ -16,7 +17,7 @@
     import { Input } from "@/components/ui/input";
     import { toast } from "@/components/ui/use-toast";
     import NavBar from "../components/NavBar"
-    
+
    
 
     async function onSubmitInscription(data) {
@@ -46,32 +47,39 @@
           throw error
           
         }
-      
-
-   
   }
   const FormSchema = z.object({
-    pseudo: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
+    pseudo: z.string().min(2, {message: "Le pseudo doit comporter au moins 2 caractères"}),
+    email: z.string().min(1, {message: "Entrez une adresse mail, SVP !"}).email(),
+     password: z.string().min(4, {message: "Le mot de passe doit comporter au moins 4 caractères ! "}),
+     confirmPassword: z.string().min(4, {message: "Le mot de passe doit comporter au moins 4 caractères"})
+    }).refine((data) => data.password === data.confirmPassword, {
+       path: ["confirmPassword"],
+      message: "Les mots de passe ne correspondent pas !"
   });
-    
+
     export default function inscription() {
+        const {
+            formState: { errors },
+          } = useForm();
+       
+
       const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-          pseudo: "",
+            pseudo: "",
+            email:"",
+            motDePasse: "",
+            confirmeMotDePasse:"",
+      }});
 
-        },
-      });
-    
       return (
         <>
         <div>
             <NavBar/>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitInscription)} className="w-2/3 space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmitInscription)} className="w-2/3 space-y-6 gap-4">
             <Controller
               name="pseudo"
               control={form.control}
@@ -79,12 +87,13 @@
                 <FormItem>
                   <FormLabel>Pseudo</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input placeholder="Pseudo" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  {errors?.pseudo && <span>{errors.pseudo.message}</span>}
                 </FormItem>
               )}
             />
+           
             <Controller
               name="email"
               control={form.control}
@@ -92,9 +101,9 @@
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email" {...field} />  
                   </FormControl>
-                  <FormMessage />
+                  {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
                 </FormItem>
               )}
             />
@@ -107,10 +116,22 @@
                   <FormControl>
                     <Input placeholder="Mot de Passe" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
+                </FormItem>
+              )} />
+             <Controller
+              name="confirmeMotDePasse"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirmez votre mot de passe</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Confirmez le mot de passe" {...field} />
+                  </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
-            />
+            /> 
             <Button type="submit">Submit</Button>
           </form>
         </Form>

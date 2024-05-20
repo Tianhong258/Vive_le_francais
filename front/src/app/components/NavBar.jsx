@@ -98,7 +98,7 @@ export default function navBar() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
             Inscription/Connection <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>

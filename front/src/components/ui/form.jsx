@@ -108,7 +108,7 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
   if (!body) {
     return null
   }
-
+  console.log(body)
   return (
     (<p
       ref={ref}

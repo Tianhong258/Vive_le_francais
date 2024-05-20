@@ -3,15 +3,16 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100%;
   /* transform: translate(-50%, -50%); */
 }
 
 .memory {
     display: grid; /* Utiliser une grille au lieu de flexbox */
     grid-template-columns: repeat(4, 1fr); /* 4 colonnes pour une grille de 4x4 */
-    gap: 10px; /* Espacement entre les cartes */
-    width: 420px; /* Largeur de la grille (ajustez selon vos besoins) */
-    margin: auto;
+    gap: 1%; /* Espacement entre les cartes */
+    width: 73%; /* Largeur de la grille (ajustez selon vos besoins) */
+    margin: 12% 0 12% 0;
     user-select: none;
   }
 
@@ -21,11 +22,12 @@
     border-radius: 15px; /* Bordure arrondie */
     border: 1px solid silver; /* Bordure */
     cursor: pointer;
-    width: 200px; /* Largeur de chaque carte */
+    width: auto; /* Largeur de chaque carte */
     height: 100px; /* Hauteur de chaque carte */
     display: flex;
     justify-content: center;
     align-items: center;
+
   }
 
   .memory > .card.hidden {

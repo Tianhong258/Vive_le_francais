@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 const inscription = async (data) => {
     try{
     //faire 10 fois algorithmes de hash le mot de passe
-    const hash = await bcrypt.hash(data.password, 10)
+    const hash = await bcrypt.hash(data.data.password, 10)
     const newUtilisateur = new Utilisateur({
-        pseudo: data.pseudo,
-        email: data.email,
+        pseudo: data.data.pseudo,
+        email: data.data.email,
         password: hash,        
     })
         await newUtilisateur.save()

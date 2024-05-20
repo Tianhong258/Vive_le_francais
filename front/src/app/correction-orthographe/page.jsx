@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { HfInference } from "@huggingface/inference";
 import NavBar from "../components/NavBar";
+import { Button } from '@/components/ui/button';
 
 
 //todo: le premier clique il y a une erreur "TypeError: Cannot read properties of null (reading 'signal')"
@@ -99,13 +100,13 @@ export default function Correction() {
                 >
                   Arrêter
                 </button>
-                <button
+                <Button
                   type="button"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  style={{backgroundColor: 'rgb(52, 84, 180)'}}
                   onClick={handleRun}                
                 >
                   Submettre
-                </button>
+                </Button>
               </div>
             </div>
       </form>
