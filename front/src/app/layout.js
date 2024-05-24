@@ -1,4 +1,5 @@
 import "./app.css"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: 'vive-le-français',
@@ -8,9 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
  return (
     <html lang="en">
-      
-      <body>{children}</body>
-   
+ 
+      <head />
+      <body>
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
+
   )
 }

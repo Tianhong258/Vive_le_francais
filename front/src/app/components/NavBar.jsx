@@ -12,7 +12,7 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 
-//todo : ajouter le logo
+//todo : ajouter le logo et un footer
 
 
 const Jeux = [

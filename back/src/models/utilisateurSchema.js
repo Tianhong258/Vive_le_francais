@@ -8,7 +8,7 @@ const uniqueValidator = require("mongoose-unique-validator")
 const utilisateurSchema = mongoose.Schema({
     pseudo: {type: String, minlength : 2, required : true, unique: true}, 
     email: {type: String,
-          validate: {
+           validate: {
             validator: async function(email) {
               const user = await this.constructor.findOne({ email });
               if(user) {
@@ -22,7 +22,7 @@ const utilisateurSchema = mongoose.Schema({
             message: props => 'The specified email address is already in use.'
           },
       required: true, unique: true},
-    password: {type: String, minlength : 4, required : true}
+    password: {type: String, minlength : 4,  required : true} 
 },{strict:false,versionKey: false})
 
 utilisateurSchema.plugin(uniqueValidator)

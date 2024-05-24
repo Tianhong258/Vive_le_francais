@@ -9,7 +9,7 @@ const inscription = async (data) => {
     const newUtilisateur = new Utilisateur({
         pseudo: data.data.pseudo,
         email: data.data.email,
-        password: hash,        
+        password: hash,
     })
         await newUtilisateur.save()
         console.log(newUtilisateur)

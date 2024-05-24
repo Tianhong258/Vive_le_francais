@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar";
 import { Button } from '@/components/ui/button';
 
 
-//todo: le premier clique il y a une erreur "TypeError: Cannot read properties of null (reading 'signal')"
+
 export default function Correction() {
   const [generatedText, setGeneratedText] = useState([]);
   const [textInput, setTextInput] = useState("");
