@@ -9,6 +9,9 @@ const inscription = async (req, res) => {
         console.log(newUtilisateur + " bien créé ! ")
         return newUtilisateur
     }catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message });
+        }
         res.status(500).json({ message: "Erreur lors de l'inscription", error: error.message });
     }
 };
@@ -22,8 +25,22 @@ const connectionUtilisateur = async (req, res) => {
     }
 };
 
+const profileUtilisateur = async (req, res) => {
+    try {
+        const utilisateurProfil = await utilisateur.profil(req); 
+        console.log(utilisateurProfil)
+        if (utilisateurProfil) {
+            return res.status(200).json(utilisateur);
+        }
+        return res.status(404).json("L'utilisateur n'existe pas !");
+    }catch (error) {
+        return res.status(501).json(error);
+    }
 
+
+}
 module.exports = { 
     inscription,
-    connectionUtilisateur
+    connectionUtilisateur,
+   profileUtilisateur,
 }

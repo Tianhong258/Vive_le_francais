@@ -1,5 +1,6 @@
 import "./app.css"
 import { Toaster } from "@/components/ui/toaster"
+import { AuthProvider } from './AuthContext';
 
 export const metadata = {
   title: 'vive-le-français',
@@ -9,10 +10,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
  return (
     <html lang="en">
- 
       <head />
       <body>
-        <main>{children}</main>
+        <main>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </main>
         <Toaster />
       </body>
     </html>

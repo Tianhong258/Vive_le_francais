@@ -56,11 +56,13 @@ useEffect(() => {
           },
           body: JSON.stringify({data}), 
         });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Une erreur est survenue');
+        }
       const json = await response.json()
       console.log(json)
-      if(response.ok){
-        setViewModification(true)
-    }
+      setViewModification(true)
     }catch(error){
       throw error
     }

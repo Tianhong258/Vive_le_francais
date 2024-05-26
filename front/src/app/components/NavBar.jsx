@@ -1,4 +1,4 @@
-import { Fragment, useState, react } from 'react'
+import { Fragment, useState, useEffect, react } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -11,6 +11,8 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import { useAuth } from '../authContext';
+
 
 //todo : ajouter le logo et un footer
 
@@ -26,7 +28,10 @@ function classNames(...classes) {
 }
 
 export default function navBar() {
+  const { isAuthenticated, user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+
 
   return (
     <header className="bg-white">
@@ -98,10 +103,18 @@ export default function navBar() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
-            Inscription/Connection <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </div>
+        {isAuthenticated ? ( 
+                <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
+                  Bienvenue, { user.pseudo } <span aria-hidden="true">&rarr;</span>
+                </Link>
+            ) : (
+              <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+                Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+            </Link>
+            )}
+     
+    </div>
+
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
@@ -181,12 +194,17 @@ export default function navBar() {
                   A propos
                 </a>
               </div>
-              <div className="py-6">
-                <Link href="/inscription-connection"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                  Inscription/Connection
+              <div className="py-6">  
+        {isAuthenticated ? ( 
+                <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
+                  Bienvenue, {user ? user.pseudo : 'Utilisateur'} <span aria-hidden="true">&rarr;</span>
                 </Link>
-              </div>
+            ) : (
+              <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+                Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+            </Link>
+            )}
+    </div>  
             </div>
           </div>
         </Dialog.Panel>

@@ -21,20 +21,22 @@ export default function detail({params}){
  }, []);
 
 
- async function deleteVocabulaire(id){
-  try{
-    const response = await fetch(`http://localhost:3001/api/${id}`, {method: "DELETE"});
-    const json = await response.json()
-  if (response.ok) {
+async function deleteVocabulaire(id) {
+  try {
+    const response = await fetch(`http://localhost:3001/api/${id}`, { method: "DELETE" });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Une erreur est survenue');
+    }
+
     setViewMessageSuppression('Votre mot a bien été supprimé.');
-  } else {
-    setViewMessageSuppression("Oups, il y a une erreur, votre mot n'a pas été supprimé.");
+  } catch (error) {
+    console.error('Erreur lors de la suppression du mot :', error);
+    setViewMessageSuppression("Oups, il y a eu un problème lors de la suppression du mot.");
   }
-} catch (error) {
-  console.error('Erreur lors de la suppression du mot :', error);
-  setViewMessageSuppression("Oups, il y a eu un problème lors de la suppression du mot.");
 }
-}
+
 
 return (
   <>
