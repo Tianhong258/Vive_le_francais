@@ -84,9 +84,9 @@ function handleCardClick(index) {
   }
 }
 
-//Fonction pour contrôler quand la deuxième carte est cliquée
+//Fonction pour contrôler le cas où la deuxième carte est cliquée
 //Si on n'a pas cliqué la même case que la première fois, on va stocker aussi l'index de cette carte dans le tableau currentPair
-//Si les deux cartes partage le même id dans la base de donnée(les deux cartes sont matchés),
+//Si les deux cartes partagent le même id dans la base de donnée(les deux cartes sont matchés),
 //on va mettre les deux index dans le tableau matché
 //et dans 750 misecondes, initialiser le tableau currentPair
 function handleNewPairClosedBy(index) {

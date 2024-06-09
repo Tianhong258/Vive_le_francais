@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, react } from 'react'
+import { Fragment, useState, useEffect, react, createContext, useContext } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -11,16 +11,13 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
-import { useAuth } from '../authContext';
-
+import { AuthContext } from '../authContext';
 
 //todo : ajouter le logo et un footer
-
-
 const Jeux = [
   { name: 'Association', description: 'Réviser mot par mot', href: "association", icon: ChartPieIcon },
   { name: 'Memory', description: 'Réviser comme un jeux de mémoriser', href: "memory", icon: CursorArrowRaysIcon },
- 
+
 ]
 
 function classNames(...classes) {
@@ -28,10 +25,8 @@ function classNames(...classes) {
 }
 
 export default function navBar() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-
 
   return (
     <header className="bg-white">
@@ -47,9 +42,9 @@ export default function navBar() {
           </button>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-start">
-        <Link href="/">
-            <img src="/logo_instant.png" alt="Logo du site" className="h-8 w-8 mr-2 "/>
-        </Link>
+          <Link href="/">
+            <img src="/logo_instant.png" alt="Logo du site" className="h-8 w-8 mr-2 " />
+          </Link>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
@@ -70,16 +65,16 @@ export default function navBar() {
                 <div className="p-4">
                   {Jeux.map((item) => (
                     <Link href={`/jeux/${item.href}`} key={item.name}>
-                    <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
-                      </div>
-                      <div className="flex-auto">
+                      <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
+                        </div>
+                        <div className="flex-auto">
                           {item.name}
-                          <span className="absolute inset-0" />  
-                        <p className="mt-1 text-gray-600">{item.description}</p>
+                          <span className="absolute inset-0" />
+                          <p className="mt-1 text-gray-600">{item.description}</p>
+                        </div>
                       </div>
-                    </div>
                     </Link>
                   ))}
                 </div>
@@ -103,17 +98,17 @@ export default function navBar() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        {isAuthenticated ? ( 
-                <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
-                  Bienvenue, { user.pseudo } <span aria-hidden="true">&rarr;</span>
-                </Link>
-            ) : (
-              <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
-                Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+          {isAuthenticated ? (
+            <Link href={`/profil/${user?.utilisateurs_Id}`} className="text-sm font-semibold leading-6 text-gray-900">
+              Bienvenue, {user?.pseudo} <span aria-hidden="true">&rarr;</span>
             </Link>
-            )}
-     
-    </div>
+          ) : (
+            <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+              Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+
+        </div>
 
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -165,13 +160,13 @@ export default function navBar() {
                     </>
                   )}
                 </Disclosure>
-                <Link href="/mon-cahier" 
+                <Link href="/mon-cahier"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Mon cahier
                 </Link>
-                <Link 
-                  href="/ajouter-un-mot" 
+                <Link
+                  href="/ajouter-un-mot"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Ajouter un mot
                 </Link>
@@ -194,17 +189,17 @@ export default function navBar() {
                   A propos
                 </a>
               </div>
-              <div className="py-6">  
-        {isAuthenticated ? ( 
-                <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
-                  Bienvenue, {user ? user.pseudo : 'Utilisateur'} <span aria-hidden="true">&rarr;</span>
-                </Link>
-            ) : (
-              <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
-                Inscription/Connexion <span aria-hidden="true">&rarr;</span>
-            </Link>
-            )}
-    </div>  
+              <div className="py-6">
+                {isAuthenticated ? (
+                  <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
+                    Bienvenue, {user ? user.pseudo : 'Utilisateur'} <span aria-hidden="true">&rarr;</span>
+                  </Link>
+                ) : (
+                  <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+                    Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </Dialog.Panel>
@@ -213,4 +208,4 @@ export default function navBar() {
   )
 }
 
-   
+

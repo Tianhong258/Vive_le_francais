@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedToken = jwtDecode(token);
         setIsAuthenticated(true);
+        console.log("useContext est là")
+        console.log(isAuthenticated)
         setUser(decodedToken);
       } catch (error) {
         console.error('Invalid token:', error);
@@ -31,6 +33,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+// export const useAuth = () => {
+//   return useContext(AuthContext);
+// };

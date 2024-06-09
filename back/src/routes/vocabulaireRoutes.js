@@ -9,7 +9,7 @@ const router = express.Router();
 //todo: aujouter middleWare utilisateur
 router.get("/", vocabulaireController.getAllVocabulaires)
 router.post("/", vocabulaireController.creatVocabulaires)
-router.get('/:id', vocabulaireController.getOneVocabulaire)//ce sont les id du mot de vocabulaire
+router.get('/:id', utilisateur, vocabulaireController.getOneVocabulaire)//ce sont les id du mot de vocabulaire
 router.put('/:id', vocabulaireController.updateVocabulaire)
 router.delete('/:id', vocabulaireController.deleteVocabulaire)
 

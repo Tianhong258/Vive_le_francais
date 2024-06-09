@@ -4,18 +4,18 @@ const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 
 const inscription = async (data) => {
-    try{
-    //faire 10 fois algorithmes de hash le mot de passe, salt=10
-    const hash = await bcrypt.hash(data.data.password, 10)
-    const newUtilisateur = new Utilisateur({
-        pseudo: data.data.pseudo,
-        email: data.data.email,
-        password: hash,
-    })
+    try {
+        //faire 10 fois algorithmes de hash le mot de passe, salt=10
+        const hash = await bcrypt.hash(data.data.password, 10)
+        const newUtilisateur = new Utilisateur({
+            pseudo: data.data.pseudo,
+            email: data.data.email,
+            password: hash,
+        })
         await newUtilisateur.save()
         console.log(newUtilisateur)
         return newUtilisateur
-    }catch(error) {
+    } catch (error) {
         throw error
     }
 };
@@ -23,40 +23,42 @@ const inscription = async (data) => {
 
 const connection = async (data, res) => {
     try {
-        const utilisateur = await Utilisateur.findOne({email: data.data.email})
+        const utilisateur = await Utilisateur.findOne({ email: data.data.email })
         console.log(data)
-         if(! utilisateur){
-            return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte"})
-         }
-         const validPassword = await bcrypt.compare(data.data.password, utilisateur.password);
-         if (!validPassword) {
-             return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" });
-         }
- 
-         const token = jwt.sign(
-             { utilisateurs_Id: utilisateur._id },
-             'RANDOM_TOKEN_SECRET',
-             { expiresIn: '24h' }
-         );
- 
-         res.setHeader('Set-Cookie', cookie.serialize('token', token, {
-             httpOnly: true,
-             secure: true,
-             maxAge: 24 * 60 * 60, 
-             sameSite: 'strict',
-             path: '/'
-         }));
- 
-         res.status(200).json({
-             utilisateurs_Id: utilisateur._id,
-             message: 'Connexion réussie'
-         });
- 
-     } catch (error) {
-         console.error('Erreur lors de la connexion:', error);
-         res.status(500).json({ message: 'Une erreur est survenue, veuillez réessayer plus tard.' });
-     }
- };
+        if (!utilisateur) {
+            return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" })
+        }
+        const validPassword = await bcrypt.compare(data.data.password, utilisateur.password);
+        if (!validPassword) {
+            return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" });
+        }
+
+        const token = jwt.sign(
+            {
+                utilisateurs_Id: utilisateur._id,
+                pseudo: utilisateur.pseudo
+            },
+            'vive-le-francais',
+            { expiresIn: '24h' }
+        );
+        res.cookie('token', token, {
+            //httpOnly: true,
+            secure: true,
+            maxAge: 24 * 60 * 60,
+            //maxAge: 24 * 60 * 60 * 1000, //24h
+            sameSite: 'strict'
+        });
+        res.status(200).json({
+            utilisateurs_Id: utilisateur._id,
+            pseudo: utilisateur.pseudo,
+            message: 'Connexion réussie'
+        });
+
+    } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        res.status(500).json({ message: 'Une erreur est survenue, veuillez réessayer plus tard.' });
+    }
+};
 
 const profil = async (req) => {
     const { id } = req.params;
@@ -64,6 +66,14 @@ const profil = async (req) => {
         let utilisateur = await Utilisateur.findById(id);
         console.log(utilisateur)
         return utilisateur
+    } catch (error) {
+        throw error
+    }
+}
+
+const deconnection = async (req, res) => {
+    try {
+        res.clearCookie("token")
     } catch (error) {
         throw error
     }
@@ -103,7 +113,7 @@ const profil = async (req) => {
 //                     user[key] = temp[key];
 //                 }
 //             });
-            
+
 //             await user.save();
 //             return res.status(201).json(user);
 //         }
@@ -126,8 +136,6 @@ const profil = async (req) => {
 // }
 
 
-// const deconnection = async (req, res, next) => {
-//     const { id } = req.params}
 
 
 // Delete a user
@@ -138,7 +146,7 @@ const profil = async (req) => {
 module.exports = {
     inscription,
     connection,
-    profil
+    profil,
+    deconnection
 
 }
-    

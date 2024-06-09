@@ -1,18 +1,21 @@
 const jwt = require('jsonwebtoken');
-const cookie = require('cookie');
- 
+//const cookies = require('cookie');
+
 module.exports = (req, res, next) => {
-       const cookies = cookie.parse(req.headers.cookie || '');
-       const token = cookies.token;
-       if (!token) {
+    const token = req.cookies.token;
+    if (!token) {
         return res.status(401).json({ message: 'Non autorisé' });
-       }
+    }
+    console.log("token est " + token)
     try {
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+        const decodedToken = jwt.verify(token, 'vive-le-francais');
+        console.log(decodedToken)
         const utilisateurId = decodedToken.utilisateurs_Id;
-       req.auth = {
-        utilisateurs_Id: utilisateurId
-       }
+        const utilisateurPseudo = decodedToken.utilisateur.pseudo;
+        req.auth = {
+            utilisateurs_Id: utilisateurId,
+            pseudo: utilisateurPseudo
+        }
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Token invalide' });

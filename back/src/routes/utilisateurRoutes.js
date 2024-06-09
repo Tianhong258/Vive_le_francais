@@ -5,7 +5,9 @@ const utilisateur = require('../middleware/utilisateur');
 
 router.post('/inscription', utilisateurController.inscription);
 router.post("/connection", utilisateurController.connectionUtilisateur)
-router.get("/:id", utilisateur, utilisateurController.profileUtilisateur)
+router.get("/deconnection", utilisateurController.deconnectionUtilisateur)
+router.get("/profil/:id", utilisateur, utilisateurController.profileUtilisateur)
+
 //router.put("/:id", utilisateurController)
 //router.delete("/:id", utilisateurController)
 
