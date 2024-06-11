@@ -9,13 +9,13 @@ module.exports = (req, res, next) => {
     console.log("token est " + token)
     try {
         const decodedToken = jwt.verify(token, 'vive-le-francais');
-        console.log(decodedToken)
         const utilisateurId = decodedToken.utilisateurs_Id;
-        const utilisateurPseudo = decodedToken.utilisateur.pseudo;
+        const utilisateurPseudo = decodedToken.pseudo;
         req.auth = {
             utilisateurs_Id: utilisateurId,
             pseudo: utilisateurPseudo
         }
+
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Token invalide' });

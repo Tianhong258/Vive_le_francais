@@ -15,9 +15,12 @@ import { AuthContext } from '../authContext';
 
 //todo : ajouter le logo et un footer
 const Jeux = [
-  { name: 'Association', description: 'Réviser mot par mot', href: "association", icon: ChartPieIcon },
-  { name: 'Memory', description: 'Réviser comme un jeux de mémoriser', href: "memory", icon: CursorArrowRaysIcon },
-
+  { name: 'Association', href: "association", description: 'Réviser mot par mot', icon: ChartPieIcon },
+  { name: 'Memory', href: "memory", description: 'Réviser comme un jeux de mémoriser', icon: CursorArrowRaysIcon },
+]
+const Profil = [
+  { name: 'Profil' },
+  { name: 'Déconnection' },
 ]
 
 function classNames(...classes) {
@@ -96,19 +99,51 @@ export default function navBar() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             A propos
           </a>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            {isAuthenticated ? (
+              <Popover className="relative">
+                <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                  Bienvenue, {user?.pseudo} !
+                  <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+                </Popover.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <Popover.Panel className="absolute left-1/2 transform -translate-x-1/2 top-full z-10 mt-2 max-w-sm w-full overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                    <div className="p-4">
+                      <Link href={`/profil/${user?.utilisateurs_Id}`} >
+                        <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+                          <div className="flex-auto">
+                            Profil
+                            <span className="absolute inset-0" />
+                          </div>
+                        </div>
+                      </Link>
+                      <Link href={"/deconnection"} >
+                        <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+                          <div className="flex-auto">
+                            Déconnection
+                            <span className="absolute inset-0" />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
+            ) : (
+              <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
+                Inscription/Connexion <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
+          </div>
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {isAuthenticated ? (
-            <Link href={`/profil/${user?.utilisateurs_Id}`} className="text-sm font-semibold leading-6 text-gray-900">
-              Bienvenue, {user?.pseudo} <span aria-hidden="true">&rarr;</span>
-            </Link>
-          ) : (
-            <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
-              Inscription/Connexion <span aria-hidden="true">&rarr;</span>
-            </Link>
-          )}
-
-        </div>
 
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -170,30 +205,56 @@ export default function navBar() {
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Ajouter un mot
                 </Link>
-                <a
+                {/* <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Ma progression
-                </a>
+                </a> */}
                 <Link
                   href="/correction-orthographe"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Correction orthographe
                 </Link>
-                <a
+                {/* <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   A propos
-                </a>
+                </a> */}
               </div>
               <div className="py-6">
                 {isAuthenticated ? (
-                  <Link href="/profil" className="text-sm font-semibold leading-6 text-gray-900">
-                    Bienvenue, {user ? user.pseudo : 'Utilisateur'} <span aria-hidden="true">&rarr;</span>
-                  </Link>
+                  <Disclosure as="div" className="-mx-3">
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                          Bienvenue, {user?.pseudo} !
+                          <ChevronDownIcon
+                            className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
+                            aria-hidden="true"
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="mt-2 space-y-2">
+                          <Disclosure.Button
+                            as="a"
+                            href={`/profil/${user?.utilisateurs_Id}`}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                          >
+                            Profil
+                          </Disclosure.Button>
+                          <Disclosure.Button
+                            as="a"
+                            href={`/deconnection`}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                          >
+                            Déconnection
+                          </Disclosure.Button>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
                 ) : (
                   <Link href="/inscription-connection" className="text-sm font-semibold leading-6 text-gray-900">
                     Inscription/Connexion <span aria-hidden="true">&rarr;</span>

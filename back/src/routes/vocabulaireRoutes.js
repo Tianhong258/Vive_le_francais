@@ -7,10 +7,10 @@ const utilisateur = require('../middleware/utilisateur');
 const router = express.Router();
 
 //todo: aujouter middleWare utilisateur
-router.get("/", vocabulaireController.getAllVocabulaires)
-router.post("/", vocabulaireController.creatVocabulaires)
+router.get("/", utilisateur, vocabulaireController.getAllVocabulaires)
+router.post("/", utilisateur, vocabulaireController.creatVocabulaires)
 router.get('/:id', utilisateur, vocabulaireController.getOneVocabulaire)//ce sont les id du mot de vocabulaire
-router.put('/:id', vocabulaireController.updateVocabulaire)
-router.delete('/:id', vocabulaireController.deleteVocabulaire)
+router.put('/:id', utilisateur, vocabulaireController.updateVocabulaire)
+router.delete('/:id', utilisateur, vocabulaireController.deleteVocabulaire)
 
-module.exports = router
+module.exports = router 

@@ -11,7 +11,7 @@ export async function getDetail(id) {
       throw new Error("La requête a échoué.");
     }
     const data = await response.json();
-    console.log(data);
+    console.log("data getDetail est " + data);
     return data;
   } catch (error) {
     console.error("Erreur lors de la récupération des détails du vocabulaire :", error);

@@ -1,7 +1,6 @@
 const Utilisateur = require('./utilisateurSchema');
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken');
-const cookie = require('cookie');
 
 const inscription = async (data) => {
     try {
@@ -24,7 +23,6 @@ const inscription = async (data) => {
 const connection = async (data, res) => {
     try {
         const utilisateur = await Utilisateur.findOne({ email: data.data.email })
-        console.log(data)
         if (!utilisateur) {
             return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" })
         }
@@ -80,49 +78,33 @@ const deconnection = async (req, res) => {
 }
 
 
+const modification = async (data, params) => {
+    const hash = await bcrypt.hash(data.data.password, 10)
+    const modifierUtilisateur = {
+        pseudo: data.data.pseudo,
+        email: data.data.email,
+        password: hash,
+    }
+    console.log("modifierUser est " + modifierUtilisateur)
+    console.log("id est " + params.id)
+    try {
+        let user = await Utilisateur.updateOne({ _id: params.id }, { ...modifierUtilisateur, _id: params.id })
+        return user
+    } catch (error) {
+        throw error
+    }
+}
 
-// const modifier = async (data) => {
-//     try{
-//         //comment savoir l'utilisateur connecté 
-//         const modifierUtilisateur = await Utilisateur.findOneAndUpdate(utilisateur, data)
-//         .then(() => console.log('User updated'))
-//         .catch((err) => console.log(err));
-//     }catch(error){
-//         throw error
-//     }
 
-// }
-
-
-// exports.update = async (req, res, next) => {
-//     const temp   = {};
-
-//     ({ 
-//         name     : temp.name,
-//         firstname: temp.firstname,
-//         email    : temp.email,
-//         password : temp.password
-//     } = req.body);
-
-//     try {
-//         let user = await User.findOne({ email: temp.email });
-
-//         if (user) {       
-//             Object.keys(temp).forEach((key) => {
-//                 if (!!temp[key]) {
-//                     user[key] = temp[key];
-//                 }
-//             });
-
-//             await user.save();
-//             return res.status(201).json(user);
+// const updateUtilisateur = async(data, params)=>{
+//     console.log(data, params)
+//       try{
+//           const utilisateur = await Utilisateur.updateOne({ _id: params.id }, { ...data.data, _id: params.id })
+//           return utilisateur;
+//         } catch (error) {
+//           throw error;
 //         }
-
-//         return res.status(404).json('user_not_found');
-//     } catch (error) {console.log(error)
-//         return res.status(501).json(error);
-//     }
-// }
+//       };
 
 // const deleteUtilisateur = async (req, res, next) => {
 //     const { id } = req.body;
@@ -147,6 +129,7 @@ module.exports = {
     inscription,
     connection,
     profil,
+    modification,
     deconnection
 
 }

@@ -29,11 +29,20 @@ const profileUtilisateur = async (req, res) => {
         const utilisateurProfil = await utilisateur.profil(req);
         console.log(utilisateurProfil)
         if (utilisateurProfil) {
-            return res.status(200).json(utilisateur);
+            return res.status(200).json(utilisateurProfil);
         }
         return res.status(404).json("L'utilisateur n'existe pas !");
     } catch (error) {
         return res.status(501).json(error);
+    }
+}
+
+const modificationUtilisateur = async (req, res) => {
+    try {
+        const utilisateurModification = await utilisateur.modification(req.body, req.params);
+        res.status(200).json({ utilisateurModification, message: "Vous avez réussi à modifier votre profil !" });
+    } catch (error) {
+        res.status(400).json({ message: 'Erreur lors de la modification du profil !', error: error.message });
     }
 }
 
@@ -47,11 +56,10 @@ const deconnectionUtilisateur = async (req, res) => {
 }
 
 
-
-
 module.exports = {
     inscription,
     connectionUtilisateur,
     profileUtilisateur,
+    modificationUtilisateur,
     deconnectionUtilisateur
 }

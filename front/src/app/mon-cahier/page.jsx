@@ -18,7 +18,13 @@ import { Button } from '@/components/ui/button'
 
 async function getListVocabulaire() {
   try {
-    let response = await fetch("http://localhost:3001/api/")
+    let response = await fetch("http://localhost:3001/api/", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     let data = await response.json();
     return data;
   } catch (error) {
