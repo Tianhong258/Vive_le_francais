@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react"
 import NavBar from "../../../components/NavBar"
 import { useForm } from "react-hook-form"
 import { getDetail } from "../../getDatail"
-
-
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -16,10 +14,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import withAuth from "../../../components/withAuth"
 
 //todo:afficher les erreurs quand le fetch ne marche pas 
 
-export default function modifierVocabulaire({ params }) {
+const modifierVocabulaire = ({ params }) => {
   const [viewModification, setViewModification] = useState(false)
   const [data, setData] = useState({})
 
@@ -108,10 +107,14 @@ export default function modifierVocabulaire({ params }) {
       </div>
     </>
   ) : (<>
+    <div>
+      <NavBar />
+    </div>
     <div className="flex justify-center items-center h-screen">
       Votre nouveau vocabulaire est bien modifié !
     </div>
   </>
   ))
-
 }
+
+export default withAuth(modifierVocabulaire)

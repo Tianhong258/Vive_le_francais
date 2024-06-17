@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import withAuth from '../components/withAuth';
 
-export default function ajouterUnMot() {
+const ajouterUnMot = () => {
   const [viewVocabulaire, setViewVocabulaire] = useState(false)
   const {
     register,
@@ -46,6 +47,7 @@ export default function ajouterUnMot() {
 
   function refreshPage() {
     window.location.reload();
+    //avec withAuth, sauter plustôt sur la page login
   }
 
 
@@ -54,6 +56,7 @@ export default function ajouterUnMot() {
       <div>
         <NavBar />
       </div>
+
       <div className="flex justify-center items-center h-screen">
         <Card className="w-[350px]">
           <CardHeader>
@@ -90,6 +93,9 @@ export default function ajouterUnMot() {
       </div>
     </>
   ) : (<>
+    <div>
+      <NavBar />
+    </div>
     <div className="flex justify-center items-center h-screen">
       Votre nouveau vocabulaire est bien enregistré !
       <div>
@@ -102,3 +108,4 @@ export default function ajouterUnMot() {
 }
 
 
+export default withAuth(ajouterUnMot)

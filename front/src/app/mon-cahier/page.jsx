@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
+import withAuth from '../components/withAuth';
 
 
 async function getListVocabulaire() {
@@ -32,7 +33,7 @@ async function getListVocabulaire() {
   }
 }
 
-export default function cahier() {
+const cahier = () => {
   const [liste, setListe] = useState([])
   useEffect(() => {
     async function generateliste() {
@@ -70,3 +71,5 @@ export default function cahier() {
     </div>
   )
 }
+
+export default withAuth(cahier)

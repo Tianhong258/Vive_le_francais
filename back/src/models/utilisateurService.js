@@ -38,8 +38,8 @@ const connection = async (data, res) => {
         res.cookie('token', token, {
             //httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60,
-            //maxAge: 24 * 60 * 60 * 1000, //24h
+            //maxAge: 24 * 60 * 60,
+            maxAge: 24 * 60 * 60 * 1000, //24h
             sameSite: 'strict'
         });
         res.status(200).json({

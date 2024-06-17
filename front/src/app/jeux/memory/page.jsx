@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import "./page.css"
 import CardMemory from "../../components/cardMemory"
 import NavBar from "../../components/NavBar";
-
+import withAuth from '../../components/withAuth';
 
 const SIDE = 4
 const VISUAL_PAUSE_MSECS = 750
@@ -49,7 +49,7 @@ function getCards(getData) {
 }
 
 
-export default function gameFun() {
+const memory = () => {
   const [isClient, setIsClient] = useState(false)
   const [cards, setCards] = useState([])
   const [matchedCardIndices, setMatchCardIndices] = useState([])
@@ -148,6 +148,7 @@ export default function gameFun() {
   )
 }
 
+export default withAuth(memory);
 
 
 

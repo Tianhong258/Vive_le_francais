@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link';
 import NavBar from '../../components/NavBar';
 import { getDetail } from "../getDatail"
+import withAuth from '../../components/withAuth'
 
 //todo : pagination
 
-export default function detail({ params }) {
+const detail = ({ params }) => {
   const [data, setData] = useState({})
   const [viewMessageSuppression, setViewMessageSuppression] = useState('');
 
@@ -60,3 +61,4 @@ export default function detail({ params }) {
   )
 }
 
+export default withAuth(detail)

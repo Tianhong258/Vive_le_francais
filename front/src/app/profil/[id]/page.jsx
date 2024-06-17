@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast";
-
+import withAuth from '@/app/components/withAuth';
 
 
 async function getProfil(id) {
@@ -34,7 +34,7 @@ async function getProfil(id) {
 }
 
 
-export default function modificationProfil({ params }) {
+const modificationProfil = ({ params }) => {
     const { toast } = useToast()
     const [viewModification, setViewModification] = useState(false)
     const [profil, setProfil] = useState(null)
@@ -138,7 +138,7 @@ export default function modificationProfil({ params }) {
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="password">Password</Label>
-                                    <Input type="text" id="password" name="password" placeholder="password"  {...register("password")} />
+                                    <Input type="password" id="password" name="password" placeholder="password"  {...register("password")} />
                                     {errors.password && <span>Ce champs est obligatoire ! </span>}
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
@@ -157,5 +157,6 @@ export default function modificationProfil({ params }) {
         </div>
     </>
     ))
-
 }
+
+export default withAuth(modificationProfil)

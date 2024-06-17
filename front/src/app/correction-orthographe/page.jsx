@@ -1,12 +1,11 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { HfInference } from "@huggingface/inference";
 import NavBar from "../components/NavBar";
 import { Button } from '@/components/ui/button';
+import withAuth from '../components/withAuth';
 
-
-
-export default function Correction() {
+const Correction = () => {
   const [generatedText, setGeneratedText] = useState([]);
   const [textInput, setTextInput] = useState("");
 
@@ -117,7 +116,7 @@ export default function Correction() {
   );
 }
 
-
+export default withAuth(Correction);
 
 
 
