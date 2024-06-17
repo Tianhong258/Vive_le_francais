@@ -62,7 +62,6 @@ export default function modifierVocabulaire({ params }) {
         throw new Error(errorData.message || 'Une erreur est survenue');
       }
       const json = await response.json()
-      console.log(json)
       setViewModification(true)
     } catch (error) {
       throw error

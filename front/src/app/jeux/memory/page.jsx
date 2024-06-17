@@ -20,7 +20,6 @@ async function getListVocabulaire() {
       },
     });
     let data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Erreur lors de la récupération de la liste de vocabulaire :", error);
@@ -63,9 +62,7 @@ export default function gameFun() {
     }
     async function generateCards() {
       const getData = await getListVocabulaire()
-      console.log(getData)
       const jeu = getCards(getData)
-      console.log("On a appelé generateCards")
       setCards(jeu)
     }
     //s'il y a une liste de vocabulaire dans la base de donne, générer la liste de vocabulaire qui va être utiliser dans le jeu

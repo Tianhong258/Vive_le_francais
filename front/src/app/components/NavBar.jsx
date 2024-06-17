@@ -12,15 +12,13 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { AuthContext } from '../authContext';
+import { Button } from '@/components/ui/button'
+import { useToast } from "@/components/ui/use-toast";
 
 //todo : ajouter le logo et un footer
 const Jeux = [
   { name: 'Association', href: "association", description: 'Réviser mot par mot', icon: ChartPieIcon },
   { name: 'Memory', href: "memory", description: 'Réviser comme un jeux de mémoriser', icon: CursorArrowRaysIcon },
-]
-const Profil = [
-  { name: 'Profil' },
-  { name: 'Déconnection' },
 ]
 
 function classNames(...classes) {
@@ -30,6 +28,35 @@ function classNames(...classes) {
 export default function navBar() {
   const { isAuthenticated, user } = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { toast } = useToast()
+
+  async function deconnection() {
+    try {
+      const response = await fetch("http://localhost:3001/api/auth/deconnection", {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Une erreur est survenue');
+      }
+      const json = await response.json();
+      toast({
+        title: " Vous vous êtes déconnecté !",
+        description: "A bientôt ! ",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Oups, il y a une erreur !",
+        description: "Vous pourrez réessayer plus tard.",
+      });
+      console.error("Erreur lors de la déconnection :", error);
+    }
+  };
+
 
   return (
     <header className="bg-white">
@@ -90,15 +117,15 @@ export default function navBar() {
           <Link href="/ajouter-un-mot" className="text-sm font-semibold leading-6 text-gray-900">
             Ajouter un mot
           </Link>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          {/* <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Ma progression
-          </a>
+          </a> */}
           <Link href="/correction-orthographe" className="text-sm font-semibold leading-6 text-gray-900">
             Correction orthographe
           </Link>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          {/* <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             A propos
-          </a>
+          </a> */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {isAuthenticated ? (
               <Popover className="relative">
@@ -125,14 +152,14 @@ export default function navBar() {
                           </div>
                         </div>
                       </Link>
-                      <Link href={"/deconnection"} >
+                      <button type="button" onClick={() => deconnection()}>
                         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
                           <div className="flex-auto">
                             Déconnection
                             <span className="absolute inset-0" />
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     </div>
                   </Popover.Panel>
                 </Transition>
@@ -246,7 +273,7 @@ export default function navBar() {
                           </Disclosure.Button>
                           <Disclosure.Button
                             as="a"
-                            href={`/deconnection`}
+                            onClick={() => deconnection()}
                             className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                           >
                             Déconnection

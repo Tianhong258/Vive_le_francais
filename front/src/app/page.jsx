@@ -26,7 +26,6 @@ async function getListVocabulaire() {
       },
     });
     let data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Erreur lors de la récupération de la liste de vocabulaire :", error);

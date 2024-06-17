@@ -12,7 +12,6 @@ const inscription = async (data) => {
             password: hash,
         })
         await newUtilisateur.save()
-        console.log(newUtilisateur)
         return newUtilisateur
     } catch (error) {
         throw error
@@ -23,11 +22,8 @@ const inscription = async (data) => {
 const connection = async (data, res) => {
     try {
         const utilisateur = await Utilisateur.findOne({ email: data.data.email })
-        if (!utilisateur) {
-            return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" })
-        }
         const validPassword = await bcrypt.compare(data.data.password, utilisateur.password);
-        if (!validPassword) {
+        if (!validPassword || !utilisateur) {
             return res.status(401).json({ message: "Paire identifiant/mot de passe incorrecte" });
         }
 
@@ -51,9 +47,7 @@ const connection = async (data, res) => {
             pseudo: utilisateur.pseudo,
             message: 'Connexion réussie'
         });
-
     } catch (error) {
-        console.error('Erreur lors de la connexion:', error);
         res.status(500).json({ message: 'Une erreur est survenue, veuillez réessayer plus tard.' });
     }
 };
@@ -62,7 +56,6 @@ const profil = async (req) => {
     const { id } = req.params;
     try {
         let utilisateur = await Utilisateur.findById(id);
-        console.log(utilisateur)
         return utilisateur
     } catch (error) {
         throw error
@@ -85,8 +78,6 @@ const modification = async (data, params) => {
         email: data.data.email,
         password: hash,
     }
-    console.log("modifierUser est " + modifierUtilisateur)
-    console.log("id est " + params.id)
     try {
         let user = await Utilisateur.updateOne({ _id: params.id }, { ...modifierUtilisateur, _id: params.id })
         return user
@@ -95,41 +86,20 @@ const modification = async (data, params) => {
     }
 }
 
-
-// const updateUtilisateur = async(data, params)=>{
-//     console.log(data, params)
-//       try{
-//           const utilisateur = await Utilisateur.updateOne({ _id: params.id }, { ...data.data, _id: params.id })
-//           return utilisateur;
-//         } catch (error) {
-//           throw error;
-//         }
-//       };
-
-// const deleteUtilisateur = async (req, res, next) => {
-//     const { id } = req.body;
-//     try {
-//         await User.deleteOne({ _id: id });
-
-//         return res.status(201).json('delete_ok');
-//     } catch (error) {
-//         return res.status(501).json(error);
-//     }
-// }
-
-
-
-
-// Delete a user
-// User.deleteOne({ name: 'Jane Doe' })
-//   .then(() => console.log('User deleted'))
-//   .catch((err) => console.log(err));
+const deleteCompte = async (data) => {
+    try {
+        const compte = await Utilisateur.deleteOne({ _id: data.params.id })
+        return compte;
+    } catch (error) {
+        throw error;
+    }
+};
 
 module.exports = {
     inscription,
     connection,
     profil,
     modification,
-    deconnection
-
+    deconnection,
+    deleteCompte
 }

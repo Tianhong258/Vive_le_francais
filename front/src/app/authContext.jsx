@@ -15,8 +15,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedToken = jwtDecode(token);
         setIsAuthenticated(true);
-        console.log("useContext est là")
-        console.log(isAuthenticated)
         setUser(decodedToken);
       } catch (error) {
         console.error('Invalid token:', error);

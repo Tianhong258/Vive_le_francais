@@ -38,7 +38,6 @@ export default function ajouterUnMot() {
         throw new Error(errorData.message || 'Une erreur est survenue');
       }
       const json = await response.json()
-      console.log(json)
       setViewVocabulaire(true)
     } catch (error) {
       throw error

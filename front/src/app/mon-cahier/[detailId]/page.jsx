@@ -6,7 +6,7 @@ import Link from 'next/link';
 import NavBar from '../../components/NavBar';
 import { getDetail } from "../getDatail"
 
-//todo : mettre en page
+//todo : pagination
 
 export default function detail({ params }) {
   const [data, setData] = useState({})

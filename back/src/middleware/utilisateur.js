@@ -6,7 +6,6 @@ module.exports = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ message: 'Non autorisé' });
     }
-    console.log("token est " + token)
     try {
         const decodedToken = jwt.verify(token, 'vive-le-francais');
         const utilisateurId = decodedToken.utilisateurs_Id;

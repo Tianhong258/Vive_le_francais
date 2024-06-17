@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/components/ui/use-toast";
 
-//bouton modifier => modifier et supprimer le compte
-//bouton déconnecter
+
 
 async function getProfil(id) {
     try {
@@ -27,7 +27,6 @@ async function getProfil(id) {
             },
         })
         let data = await response.json();
-        console.log("profil data est " + data)
         return data;
     } catch (error) {
         console.error("Erreur lors de la récupération de le profil de l'utilisateur :", error);
@@ -36,8 +35,12 @@ async function getProfil(id) {
 
 
 export default function modificationProfil({ params }) {
+    const { toast } = useToast()
     const [viewModification, setViewModification] = useState(false)
     const [profil, setProfil] = useState(null)
+
+
+
     useEffect(() => {
         async function getUtilisateur() {
             const getData = await getProfil(params.id)
@@ -75,12 +78,36 @@ export default function modificationProfil({ params }) {
                 throw new Error(errorData.message || 'Une erreur est survenue');
             }
             const json = await response.json()
-            console.log(json)
-            setViewModification(true)
         } catch (error) {
             throw error
         }
     }
+
+
+    async function deleteCompte(id) {
+        try {
+            let response = await fetch(`http://localhost:3001/api/auth/${id}`, {
+                method: "DELETE",
+                credentials: "include"
+            })
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Une erreur est survenue');
+            }
+            toast({
+                title: "Vous avez bien supprimé votre compte, à bientôt ! "
+            })
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Oups, il y a une erreur ! ",
+                description: error.message || "Vous pourrez réessayer un peu plus tard.",
+            });
+            console.error('Erreur lors de la suppression du compte :', error);
+        }
+    }
+
+
 
     return (!viewModification ? (
         <>
@@ -115,7 +142,7 @@ export default function modificationProfil({ params }) {
                                     {errors.password && <span>Ce champs est obligatoire ! </span>}
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
-                                    <Button variant="outline">Annuler</Button>
+                                    <Button variant="outline" onClick={() => deleteCompte(params.id)}>Supprimer mon compte</Button>
                                     <Button style={{ backgroundColor: 'rgb(52, 84, 180)' }} type="submit">Soumettre</Button>
                                 </div>
                             </div>

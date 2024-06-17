@@ -43,10 +43,11 @@ const FormSchemaConnection = z.object({
 export default function inscription() {
   const { setIsAuthenticated, setUser, user, isAuthenticated } = useContext(AuthContext);
   const { toast } = useToast()
-  useEffect(() => {
-    // Observer les changements dans l'état `user`
-    console.log('L\'état user a changé:', user);
-  }, [user]);
+
+  // useEffect(() => {
+  //   // Observer les changements dans l'état `user`
+  //   console.log('L\'état user a changé:', user);
+  // }, [user]);
 
   const formInscription = useForm({
     resolver: zodResolver(FormSchemaInscription
@@ -83,7 +84,6 @@ export default function inscription() {
         throw new Error(errorData.message || 'Une erreur est survenue');
       }
       const json = await response.json();
-      console.log(data);
       toast({
         title: "Inscription réussie !",
         description: "Bienvenue chez Vive le Français ! Vous pouvez maintenant vous connecter.",
@@ -115,7 +115,6 @@ export default function inscription() {
       }
       const json = await response.json()
       const token = Cookies.get("token");
-      console.log("Token est " + token)
       if (token) {
         const decodedToken = jwtDecode(token);
         setIsAuthenticated(true);
@@ -124,7 +123,6 @@ export default function inscription() {
       toast({
         title: "Vous vous êtes bien connecté ! "
       })
-      console.log("L'utilisateur est bien connecté")
     } catch (error) {
       toast({
         variant: "destructive",
@@ -151,7 +149,6 @@ export default function inscription() {
             <Card>
               <Form {...formInscription} >
                 <form onSubmit={formInscription.handleSubmit(onSubmitInscription)} className="space-y-2 space-x-4">
-
                   <FormField
                     // className="grid w-full items-center gap-4"
                     name="pseudo"

@@ -14,7 +14,7 @@ export default function Correction() {
     const value = event.target.value;
     setTextInput(value);
   };
-  //todo : Le stream de texte change trop vite
+  //todo : Le stream de texte est généré trop vite
   async function* textStreamRes(hf, controller, input) {
     let tokens = [];
 
@@ -30,7 +30,6 @@ export default function Correction() {
       }
     )) {
       tokens.push(output);
-      console.log("input est " + input);
       yield tokens;
     }
   }
@@ -39,7 +38,6 @@ export default function Correction() {
     const controller = new AbortController();
     const message =
       "<s>[INST]{:}[/INST]";
-    //todo : améliorer le promp, trop embêtent d'avoir toujours félicitations
     const input = message.replace(
       "{:}",
       `Tu es un assistant spécialisé dans la correction de la syntaxe et de l'orthographe des phrases en français. Si la phrase est correcte, réponds simplement par "Félicitations ! Votre phrase est correcte !". Si la phrase est incorrecte, affiche uniquement la phrase corrigée sans ajouter d'autres commentaires. Corrige la phrase suivante :${textInput}`
@@ -59,8 +57,8 @@ export default function Correction() {
           setGeneratedText(newToken.slice());
         }
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -78,7 +76,7 @@ export default function Correction() {
                 htmlFor="phrase"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Entrez la phrase français que vous voulez corriger :
+                Entrez la phrase française que vous voulez corriger :
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -115,18 +113,6 @@ export default function Correction() {
           {generatedText}
         </div>
       </div>
-      {/* 
-      <div className="container">
-          <h1>Entrez la phrase français que vous voulez corriger : </h1>
-          <Input id="input" type="text" style={{ width: '500px', marginTop: '20px' }} onChange={handleOnChange}/>
-        
-          <button id="run" type="button" class="btn btn-primary" onClick={handleRun}>Run</button>
-          <button id="abort" type="button" class="btn btn-danger"  onClick={()=>controller.abort()}>Abort</button>
-      </div>
-        <div id="generation">
-          {generatedText}
-        </div>
-      </div> */}
     </div>
   );
 }
